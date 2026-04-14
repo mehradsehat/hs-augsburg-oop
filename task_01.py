@@ -87,7 +87,7 @@ def pretty_str(current_price):
     return result
 
 
-# test Case
+# test_Case
 
 print(set_stock("Appl inc.", "AALP"))
 print(name)
