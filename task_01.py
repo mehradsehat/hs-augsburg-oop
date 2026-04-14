@@ -85,3 +85,13 @@ def pretty_str(current_price):
     result += f"Kapital frei: {capital}"
 
     return result
+
+
+# test Case
+
+print(set_stock("Appl inc.", "AALP"))
+print(name)
+print(symbol)
+print(set_stock(4, "AALP"))
+print(name)
+print(symbol)
