@@ -138,8 +138,9 @@ print(set_stock("Apple", "AAPL"))
 print(change_available_capital(1000.0))
 print(purchase_sell(100.0, 3))
 print(pretty_str(120.0))
-"""
+
 
 # Wrong test
 print(purchase_sell(500.0, 10))
 print(pretty_str(120.0))
+"""
