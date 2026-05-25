@@ -1,8 +1,9 @@
-from task_06_share import Share
+from task_07_share import Share
 import os
 
 
 class Portfolio:
+
     def __init__(self, name, base_path):
 
         if not os.path.isdir(base_path):
@@ -13,13 +14,42 @@ class Portfolio:
         self.capital = 0.0
         self.shares = {}
 
+    def add_share(self, symbol):
+
+        if symbol in self.shares:
+            return False
+
+        file_path = os.path.join(self.base_path, symbol + ".csv")
+
+        share = Share(file_path)
+        share.load_data()
+
+        self.shares[share.symbol] = share
+
+        return True
+
+    def update_all(self, api_key="demo"):
+
+        failed_symbols = []
+
+        for share in self.shares.values():
+            if not share.update(api_key):
+                failed_symbols.append(share.symbol)
+
+        return failed_symbols
+
+    def shutdown(self):
+
+        for share in self.shares.values():
+            share.save_data()
+
     def change_available_capital(self, changed_capital):
 
         if self.capital + changed_capital >= 0:
             self.capital = self.capital + changed_capital
             return True
-        else:
-            return False
+
+        return False
 
     def load_all_shares(self):
 
@@ -28,11 +58,9 @@ class Portfolio:
         for file_name in files:
 
             if file_name.endswith(".csv"):
-
                 full_path = os.path.join(self.base_path, file_name)
 
                 share = Share(full_path)
-
                 share.load_data()
 
                 self.shares[share.symbol] = share
@@ -51,37 +79,33 @@ class Portfolio:
 
         trade_value = share.estimate_price(volume)
 
-        # BUY
         if volume > 0:
             if self.capital >= trade_value:
                 if share.purchase_sell(volume):
                     self.capital = self.capital - trade_value
                     return True
-                else:
-                    return False
-            else:
-                return False
 
-        # SELL
+            return False
+
         elif volume < 0:
             if abs(volume) <= share.purchased_volume:
                 if share.purchase_sell(volume):
                     self.capital = self.capital + trade_value
                     return True
-                else:
-                    return False
-            else:
-                return False
 
-        else:
             return False
 
+        return False
+
     def __iter__(self):
+
         self.iter_index = 0
         self.iter_shares = list(self.shares.values())
+
         return self
 
     def __next__(self):
+
         if self.iter_index >= len(self.iter_shares):
             raise StopIteration
 
