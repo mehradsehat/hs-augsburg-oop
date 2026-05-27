@@ -120,7 +120,7 @@ def pretty_str(date_str, current_price):
 
     return (
         f"Symbol: {symbol}\n"
-        f"Date: {check_timestamp(date_str)}"
+        f"Date: {check_timestamp(date_str)}\n"
         f"Purchased Volume: {purchased_volume}\n"
         f"Profit/Loss: {profit_loss}\n"
         f"Total Capital: {total}\n"
