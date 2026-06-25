@@ -11,8 +11,8 @@ def set_stock(stock_name, stock_symbol):
     global symbol
 
     if isinstance(stock_name, str) and isinstance(stock_symbol, str):
-        stock_name = name
-        stock_symbol = symbol
+        name = stock_name
+        symbol = stock_symbol
         return True
     else:
         return False

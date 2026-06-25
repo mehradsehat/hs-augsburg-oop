@@ -1,44 +1,99 @@
 import datetime
-
-capital = 0.0
+import os
 
 
 class Share:
-    def __init__(self, name, symbol):
+    def __init__(self, path_to_csv_file, name=""):
+        self.path_to_csv_file = path_to_csv_file
+        self.name = name
 
-        if isinstance(name, str) and isinstance(symbol, str):
-            self.name = name
-            self.symbol = symbol
-        else:
-            self.name = ""
-            self.symbol = ""
+        filename = os.path.basename(path_to_csv_file)
+        symbol, extension = os.path.splitext(filename)
 
+        if extension.lower() != ".csv":
+            raise ValueError("Invalid CSV file.")
+
+        self.symbol = symbol
         self.current_price = -1.0
         self.purchase_price = 0.0
         self.purchased_volume = 0
         self.current_date = datetime.date.today()
         self.profit_loss = 0.0
         self.bound_capital = 0.0
-        self.history = []  # date_str, current_price, volume
+        self.history = []
+        self.csv_data = []
 
-    def set_current_price(self, current_price, date_str=""):
-        if not isinstance(current_price, (int, float)):
+    def estimate_price(self, volume):
+        if self.current_price == -1.0:
+            return 0.0
+
+        return self.current_price * volume
+
+    def set_current_price(self, date_str=""):
+        try:
+            self.current_date = check_timestamp(date_str)
+
+            search_date = self.current_date
+            found_price = None
+
+            for day_back in range(0, 6):
+                for item in self.csv_data:
+                    if item[0] == search_date:
+                        found_price = item[1]
+                        break
+
+                if found_price is not None:
+                    break
+
+                search_date = search_date - datetime.timedelta(days=1)
+
+            if found_price is None:
+                self.current_price = -1.0
+                self.profit_loss = 0.0
+                self.bound_capital = 0.0
+                raise LookupError("No Close Price Found For This Date")
+
+            self.current_date = search_date
+            self.current_price = found_price
+
+            self.profit_loss = self.current_price * self.purchased_volume
+
+            for item in self.history:
+                self.profit_loss = self.profit_loss - (item[1] * item[2])
+
+            self.bound_capital = self.current_price * self.purchased_volume
+
+        except:
             self.current_price = -1.0
             self.profit_loss = 0.0
             self.bound_capital = 0.0
+            raise
+
+    def load_data(self):
+        if not os.path.exists(self.path_to_csv_file):
             return False
 
-        self.current_date = check_timestamp(date_str)
-        self.current_price = float(current_price)
+        try:
+            file = open(self.path_to_csv_file, "r")
+            lines = file.readlines()
+            file.close()
 
-        self.profit_loss = self.current_price * self.purchased_volume
+            self.csv_data.clear()
 
-        for item in self.history:
-            self.profit_loss = self.profit_loss - (item[1] * item[2])
+            for i in range(1, len(lines)):
+                try:
+                    values = lines[i].split(",")
+                    date_obj = check_timestamp(values[0])
+                    close_price = float(values[4])
+                    self.csv_data.append([date_obj, close_price])
 
-        self.bound_capital = self.current_price * self.purchased_volume
+                except:
+                    continue
 
-        return True
+            return True
+
+        except:
+            return False
 
     def total_volume(self):
         volume = 0
@@ -49,36 +104,18 @@ class Share:
         return volume
 
     def purchase_sell(self, volume):
-        global capital
-
         if self.current_price == -1.0:
             return False
 
         if volume > 0:
-
-            if capital >= self.current_price * volume:
-
-                capital -= self.current_price * volume
-
-                self.purchased_volume += volume
-
-                self.purchase_price = self.current_price
-
-                self.history.append([self.current_date, self.current_price, volume])
-
-                return True
-
-            else:
-                return False
+            self.purchased_volume += volume
+            self.purchase_price = self.current_price
+            self.history.append([self.current_date, self.current_price, volume])
+            return True
 
         elif volume < 0:
-
             if self.purchased_volume >= abs(volume):
-
-                capital += self.current_price * abs(volume)
-
                 self.purchased_volume -= abs(volume)
-
                 self.history.append([self.current_date, self.current_price, volume])
 
                 if self.purchased_volume == 0:
@@ -93,7 +130,6 @@ class Share:
             return False
 
     def __str__(self):
-
         if self.symbol == "" or self.current_price == -1.0:
             return ""
 
@@ -110,7 +146,6 @@ class Share:
 
 
 def check_timestamp(date_str):
-
     if not isinstance(date_str, str) or len(date_str) == 0:
         return datetime.date.today()
 
