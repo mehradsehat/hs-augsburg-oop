@@ -138,389 +138,572 @@ def pretty_str(current_stock_price):
 
 
 """
-ÜBERSICHT DER GLOBALEN VARIABLEN
---------------------------------
+ÜBERSICHT DER FUNKTIONEN
+مرور کلی تابع‌ها
+=========================
+
+
+GLOBALE VARIABLEN
+متغیرهای سراسری
+-----------------
 
 name:
-Name der Aktie.
-Beispiel: "Apple"
+نام کامل سهم (Name der Aktie)
+مثال:
+"Apple"
 
 symbol:
-Kurzzeichen der Aktie.
-Beispiel: "AAPL"
+نماد کوتاه سهم (Aktiensymbol)
+مثال:
+"AAPL"
 
 purchase_price:
-Preis pro Aktie beim letzten Kauf.
+قیمت خرید هر سهم (Kaufpreis pro Aktie)
 
 purchased_volume:
-Anzahl der aktuell vorhandenen Aktien.
+تعداد سهم‌هایی که در حال حاضر داریم
+(gekauftes Volumen / Aktienanzahl)
 
 capital:
-Aktuell verfügbares Bargeld.
+پول نقد قابل استفاده
+(verfügbares Kapital)
 
 
-1. FUNKTION: set_stock(stock_name, stock_symbol)
-------------------------------------------------
+1. set_stock(stock_name, stock_symbol)
+=======================================
 
-Aufgabe:
-Speichert den Namen und das Symbol der Aktie.
+Aufgabe / وظیفه:
+این تابع نام و نماد سهم را ذخیره می‌کند.
 
-Parameter:
 stock_name:
-Name der Aktie als String.
+نام سهم به صورت String
 
 stock_symbol:
-Symbol der Aktie als String.
+نماد سهم به صورت String
 
-Bedingung:
-Beide Parameter müssen vom Typ str sein.
+شرط:
+هر دو پارامتر باید از نوع str باشند.
 
-Prüfung:
+Prüfung / بررسی:
+
 isinstance(stock_name, str)
-und
+
+و:
+
 isinstance(stock_symbol, str)
 
-Änderung:
+اگر هر دو String باشند:
+
 name = stock_name
 symbol = stock_symbol
 
-Rückgabewert:
+Rückgabewert / مقدار بازگشتی:
+
 True:
-Name und Symbol wurden erfolgreich gespeichert.
+نام و نماد با موفقیت ذخیره شده‌اند.
 
 False:
-Mindestens ein Parameter ist kein String.
+حداقل یکی از پارامترها String نیست.
 
 
-2. FUNKTION: change_available_capital(capital_change)
-------------------------------------------------------
+2. change_available_capital(capital_change)
+============================================
 
-Aufgabe:
-Erhöht oder verringert das verfügbare Kapital.
-
-Parameter:
-capital_change:
-Änderung des Kapitals.
+Aufgabe / وظیفه:
+این تابع سرمایه قابل استفاده
+(verfügbares Kapital)
+را افزایش یا کاهش می‌دهد.
 
 capital_change > 0:
-Kapital wird erhöht.
+سرمایه افزایش پیدا می‌کند.
 
 capital_change < 0:
-Kapital wird verringert.
+سرمایه کاهش پیدا می‌کند.
 
 capital_change == 0:
-Kapital bleibt unverändert.
+سرمایه تغییر نمی‌کند.
 
-Formel:
-Neues Kapital = altes Kapital + Kapitaländerung
+Formel / فرمول:
+
+Neues Kapital =
+altes Kapital + Kapitaländerung
+
+سرمایه جدید =
+سرمایه قبلی + مقدار تغییر سرمایه
 
 Python:
+
 capital = capital + capital_change
 
-Bedingung beim Verringern:
-Das Kapital darf niemals negativ werden.
+شرط مهم:
+سرمایه نباید منفی شود.
 
-Prüfung:
+Prüfung / بررسی:
+
 abs(capital_change) <= capital
 
-oder allgemein:
+یا:
+
 capital + capital_change >= 0
 
 Rückgabewert:
+
 True:
-Die Änderung wurde durchgeführt.
+تغییر سرمایه با موفقیت انجام شده است.
 
 False:
-Die Änderung würde das Kapital negativ machen.
+این تغییر باعث منفی شدن سرمایه می‌شود.
 
 
-3. FUNKTION: profit_or_loss(current_stock_price)
--------------------------------------------------
+3. profit_or_loss(current_stock_price)
+=======================================
 
-Aufgabe:
-Berechnet den aktuellen Gewinn oder Verlust der Aktien.
+Aufgabe / وظیفه:
+این تابع سود یا ضرر فعلی
+(Gewinn oder Verlust)
+را محاسبه می‌کند.
 
-Parameter:
 current_stock_price:
-Aktueller Preis pro Aktie.
+قیمت فعلی هر سهم
+(aktueller Aktienpreis)
 
-Formel:
+Formel / فرمول:
+
 Gewinn oder Verlust =
-(aktueller Aktienpreis - Kaufpreis) × Aktienanzahl
+(aktueller Aktienpreis - Kaufpreis)
+× Aktienanzahl
+
+سود یا ضرر =
+(قیمت فعلی - قیمت خرید)
+× تعداد سهام
 
 Python:
-(current_stock_price - purchase_price) * purchased_volume
 
-Ergebnis:
-Positiver Wert:
-Gewinn
+(current_stock_price - purchase_price)
+* purchased_volume
 
-Negativer Wert:
-Verlust
+Ergebnis / نتیجه:
 
-Wert 0:
-Weder Gewinn noch Verlust
+مقدار مثبت:
+Gewinn = سود
 
-Beispiel:
-Kaufpreis = 50 €
-aktueller Preis = 60 €
-Volumen = 10
+مقدار منفی:
+Verlust = ضرر
+
+مقدار صفر:
+نه سود و نه ضرر
+
+Beispiel / مثال:
+
+purchase_price = 50
+current_stock_price = 60
+purchased_volume = 10
 
 Gewinn:
-(60 - 50) × 10 = 100 €
+
+(60 - 50) * 10 = 100 Euro
 
 
-4. FUNKTION: total_capital(current_stock_price)
-------------------------------------------------
+4. total_capital(current_stock_price)
+======================================
 
-Aufgabe:
-Berechnet das gesamte Vermögen.
+Aufgabe / وظیفه:
+این تابع کل سرمایه
+(Gesamtkapital)
+را محاسبه می‌کند.
 
-Das Gesamtkapital besteht aus:
-1. verfügbarem Kapital
-2. gebundenem Kapital
+Gesamtkapital شامل دو بخش است:
 
-Gebundenes Kapital:
-Wert der aktuell gehaltenen Aktien.
+1. Gebundenes Kapital
+سرمایه‌ای که داخل سهام قرار دارد.
+
+2. Verfügbares Kapital
+پول نقدی که هنوز قابل استفاده است.
+
+
+Gebundenes Kapital
+سرمایه درگیر در سهام:
 
 Formel:
+
 Gebundenes Kapital =
 Aktienanzahl × aktueller Aktienpreis
 
+سرمایه درگیر =
+تعداد سهم × قیمت فعلی هر سهم
+
 Python:
+
 purchased_volume * current_stock_price
 
-Verfügbares Kapital:
-Das noch vorhandene Bargeld.
+
+Verfügbares Kapital
+سرمایه قابل استفاده:
+
+این همان متغیر capital است.
 
 Python:
+
 capital
 
-Gesamtkapital:
-Gebundenes Kapital + verfügbares Kapital
+
+Gesamtkapital
+کل سرمایه:
 
 Formel:
+
 Gesamtkapital =
-(purchased_volume × current_stock_price) + capital
+gebundenes Kapital + verfügbares Kapital
+
+کل سرمایه =
+سرمایه درگیر + سرمایه قابل استفاده
 
 Python:
+
 purchased_volume * current_stock_price + capital
 
 
-5. FUNKTION: purchase_sell(current_stock_price, volume)
---------------------------------------------------------
+5. purchase_sell(current_stock_price, volume)
+==============================================
 
-Aufgabe:
-Kauft oder verkauft Aktien.
+Aufgabe / وظیفه:
+این تابع سهم را می‌خرد یا می‌فروشد.
 
-Parameter:
 current_stock_price:
-Aktueller Preis pro Aktie.
+قیمت فعلی هر سهم
+(aktueller Aktienpreis)
 
 volume:
-Anzahl der zu kaufenden oder zu verkaufenden Aktien.
+تعداد سهم مورد معامله
+(gekauftes oder verkauftes Volumen)
+
 
 volume > 0:
-Aktien werden gekauft.
+Kaufen = خرید
 
 volume < 0:
-Aktien werden verkauft.
+Verkaufen = فروش
 
 volume == 0:
-Keine Transaktion.
+هیچ معامله‌ای انجام نمی‌شود.
 
 
-VORAUSSETZUNG FÜR KAUF UND VERKAUF
+VORAUSSETZUNG
+شرط اولیه معامله
+----------------
 
-Das Aktiensymbol muss gültig sein.
+نماد سهم باید معتبر باشد.
 
 Prüfung:
+
 symbol.isalnum()
 
-isalnum() bedeutet:
-Das Symbol enthält nur Buchstaben und Zahlen.
+isalnum() بررسی می‌کند که String فقط شامل
+حروف و عدد باشد.
 
 Beispiele:
+
 "AAPL"   -> True
 "BMW123" -> True
 "BMW.DE" -> False
+"AAPL!"  -> False
 ""       -> False
 
 
-KAUF
+KAUFEN
+خرید
+------
 
-Ein positiver volume-Wert bedeutet Kauf.
+اگر volume مثبت باشد، خرید انجام می‌شود.
 
-Formel für die Kaufkosten:
-Kaufkosten = aktueller Preis × gekauftes Volumen
+مثال:
+
+volume = 5
+
+یعنی:
+۵ سهم خریداری شود.
+
+Kaufkosten / هزینه خرید:
+
+Formel:
+
+Kaufkosten =
+aktueller Aktienpreis × gekauftes Volumen
+
+هزینه خرید =
+قیمت فعلی هر سهم × تعداد سهم خریداری‌شده
 
 Python:
+
 purchase_cost = current_stock_price * volume
 
-Bedingung:
-Die Kaufkosten dürfen nicht größer als das verfügbare Kapital sein.
+شرط خرید:
 
-Prüfung:
 purchase_cost <= capital
 
-Nach erfolgreichem Kauf:
+یعنی هزینه خرید نباید بیشتر از سرمایه قابل استفاده باشد.
 
-Neues Kapital:
+
+Nach dem Kauf
+بعد از خرید:
+
+Kapital reduzieren
+سرمایه کم می‌شود:
+
 capital = capital - purchase_cost
 
-Neuer Aktienbestand:
+Aktienbestand erhöhen
+تعداد سهم افزایش پیدا می‌کند:
+
 purchased_volume = purchased_volume + volume
 
-Neuer gespeicherter Kaufpreis:
+Kaufpreis speichern
+قیمت خرید جدید ذخیره می‌شود:
+
 purchase_price = current_stock_price
 
+
 Beispiel:
-Kapital = 1000 €
-Preis = 50 €
-Volumen = 4
+
+capital = 1000
+current_stock_price = 50
+volume = 4
 
 Kaufkosten:
-50 × 4 = 200 €
+
+50 * 4 = 200
 
 Neues Kapital:
-1000 - 200 = 800 €
 
-Neuer Aktienbestand:
+1000 - 200 = 800
+
+Neues Volumen:
+
 0 + 4 = 4 Aktien
 
 
-VERKAUF
+VERKAUFEN
+فروش
+--------
 
-Ein negativer volume-Wert bedeutet Verkauf.
+اگر volume منفی باشد، فروش انجام می‌شود.
 
-Beispiel:
+مثال:
+
 volume = -3
 
-Das bedeutet:
-3 Aktien verkaufen.
+یعنی:
+۳ سهم فروخته شود.
 
-Bedingung:
-Man darf nicht mehr Aktien verkaufen, als man besitzt.
+شرط فروش:
+
+نباید بیشتر از تعداد سهامی که داریم بفروشیم.
 
 Prüfung:
+
 abs(volume) <= purchased_volume
 
-Formel für den Verkaufserlös:
+abs(volume):
+علامت منفی را حذف می‌کند.
+
+مثال:
+
+abs(-3) = 3
+
+
+Verkaufserlös / درآمد فروش:
+
+Formel:
+
 Verkaufserlös =
-aktueller Preis × Anzahl der verkauften Aktien
+aktueller Aktienpreis × verkauftes Volumen
+
+درآمد فروش =
+قیمت فعلی × تعداد سهم فروخته‌شده
 
 Python:
+
 sale_income = current_stock_price * abs(volume)
 
-Neues Kapital:
+
+Kapital erhöhen
+سرمایه افزایش پیدا می‌کند:
+
 capital = capital + sale_income
 
-Neuer Aktienbestand:
+
+Aktienbestand reduzieren
+تعداد سهم کاهش پیدا می‌کند:
+
 purchased_volume = purchased_volume + volume
 
-Warum wird addiert?
-Weil volume negativ ist.
+چرا جمع می‌کنیم؟
 
-Beispiel:
+چون volume منفی است.
+
+مثال:
+
 purchased_volume = 10
 volume = -3
 
-10 + (-3) = 7 Aktien
+10 + (-3) = 7
+
 
 Rückgabewert:
+
 True:
-Kauf oder Verkauf war erfolgreich.
+خرید یا فروش موفق بوده است.
 
 False:
-Symbol ungültig,
-nicht genügend Kapital,
-nicht genügend Aktien
-oder volume ist 0.
+یکی از شرایط زیر برقرار بوده است:
+
+- Symbol معتبر نیست.
+- سرمایه کافی نیست.
+- تعداد سهم کافی نیست.
+- volume برابر صفر است.
 
 
-6. FUNKTION: pretty_str(current_stock_price)
----------------------------------------------
+6. pretty_str(current_stock_price)
+===================================
 
-Aufgabe:
-Erstellt einen schönen und lesbaren Ausgabestring.
+Aufgabe / وظیفه:
+این تابع یک خروجی زیبا و خوانا
+(schöne und lesbare Ausgabe)
+ایجاد می‌کند.
 
-Parameter:
 current_stock_price:
-Aktueller Preis pro Aktie.
+قیمت فعلی هر سهم
 
-Bedingung:
-Das Symbol muss ein String und alphanumerisch sein.
+شرط:
+
+symbol باید:
+
+1. از نوع String باشد.
+2. فقط شامل حروف و اعداد باشد.
 
 Prüfung:
-isinstance(symbol, str) and symbol.isalnum()
 
-Wenn kein gültiges Symbol gesetzt ist:
-Rückgabe eines Leerstrings.
+isinstance(symbol, str)
+and
+symbol.isalnum()
 
-Python:
+اگر Symbol معتبر نباشد:
+
 return ""
 
-Wenn das Symbol gültig ist:
-Die Funktion gibt folgende Informationen zurück:
+یعنی یک Leerstring
+یا رشته خالی برگردانده می‌شود.
 
-1. Aktiensymbol
-2. gekauftes Volumen
-3. Gewinn oder Verlust
-4. gebundenes Kapital
-5. verfügbares Kapital
-6. Gesamtkapital
 
-Verwendete Formeln:
+اگر Symbol معتبر باشد، اطلاعات زیر نمایش داده می‌شوند:
+
+Aktiensymbol:
+نماد سهم
+
+Gekauftes Volumen:
+تعداد سهام موجود
+
+Gewinn/Verlust:
+سود یا ضرر فعلی
+
+Gebundenes Kapital:
+سرمایه‌ای که در سهام قرار دارد
+
+Verfügbares Kapital:
+پول نقد قابل استفاده
+
+Gesamtkapital:
+کل دارایی
+
+
+Verwendete Formeln
+فرمول‌های استفاده‌شده
+---------------------
 
 Gewinn oder Verlust:
+
 (current_stock_price - purchase_price)
 * purchased_volume
 
+
 Gebundenes Kapital:
+
 purchased_volume * current_stock_price
 
+
 Verfügbares Kapital:
+
 capital
 
-Gesamtkapital:
-(purchased_volume * current_stock_price)
-+ capital
 
-Wichtig:
-pretty_str() verwendet return und nicht print.
+Gesamtkapital:
+
+purchased_volume * current_stock_price + capital
+
+
+WICHTIG
+نکته مهم
+---------
+
+pretty_str() باید از return استفاده کند،
+نه print.
 
 return:
-Gibt den String an den Aufrufer zurück.
+مقدار را از تابع برمی‌گرداند.
 
 print:
-Zeigt einen Wert nur auf dem Bildschirm an.
+فقط مقدار را روی صفحه نمایش می‌دهد.
 
 
 KURZE FORMELÜBERSICHT
----------------------
+خلاصه فرمول‌ها
+=====================
 
-Kaufkosten:
+Kaufkosten
+هزینه خرید:
+
 current_stock_price * volume
 
-Verkaufserlös:
+
+Verkaufserlös
+درآمد فروش:
+
 current_stock_price * abs(volume)
 
-Gewinn oder Verlust:
+
+Gewinn oder Verlust
+سود یا ضرر:
+
 (current_stock_price - purchase_price)
 * purchased_volume
 
-Gebundenes Kapital:
+
+Gebundenes Kapital
+سرمایه داخل سهام:
+
 purchased_volume * current_stock_price
 
-Verfügbares Kapital:
+
+Verfügbares Kapital
+سرمایه قابل استفاده:
+
 capital
 
-Gesamtkapital:
+
+Gesamtkapital
+کل سرمایه:
+
 purchased_volume * current_stock_price + capital
 
-Kapitaländerung:
+
+Kapitaländerung
+تغییر سرمایه:
+
 capital = capital + capital_change
 
-Aktienbestand nach Kauf oder Verkauf:
+
+Aktienbestand nach Kauf oder Verkauf
+تعداد سهم بعد از خرید یا فروش:
+
 purchased_volume = purchased_volume + volume
 """
